@@ -1,6 +1,6 @@
 from time import sleep
 
-from handlers.processers import BaseProcesser, BaseProcesserList
+from handlers.processers import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):
@@ -31,7 +31,7 @@ class Processer2(BaseProcesser):
         print("** FINISH")
 
 
-class ProcesserList(BaseProcesserList):
+class ProcesserList(BaseProcessersManager):
     def pre_process_for_starting(self):
         print("---- START ALL ----")
 

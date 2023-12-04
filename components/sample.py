@@ -2,7 +2,8 @@ from time import sleep
 
 import streamlit as st
 
-from handlers.processers import BaseProcesser, BaseProcesserList
+from handlers.processers import BaseProcesser, BaseProcessersManager
+from handlers.s_states import BaseSState
 
 
 class Processer1(BaseProcesser):
@@ -33,7 +34,7 @@ class Processer2(BaseProcesser):
         st.write("** FINISH")
 
 
-class ProcesserList(BaseProcesserList):
+class ProcessersManager(BaseProcessersManager):
     def pre_process_for_starting(self):
         self.message_area = st.empty()
         self.message_area.info("START")
@@ -46,17 +47,22 @@ class ProcesserList(BaseProcesserList):
         self.message_area.info("FINISH")
 
 
-PROCESSER_LIST_STATE = "PROCESSER_LIST_STATE"
+class ProcessersManagerSState(BaseSState[ProcessersManager]):
+    @staticmethod
+    def get_name() -> str:
+        return "PROCESSERS_MANAGER"
 
-
-def init_session_state():
-    if not PROCESSER_LIST_STATE in st.session_state:
-        st.session_state[PROCESSER_LIST_STATE] = ProcesserList([Processer1, Processer2])
+    @staticmethod
+    def get_default() -> ProcessersManager:
+        return ProcessersManager([Processer1, Processer2])
+    
+    @classmethod
+    def on_click_run(cls) -> None:
+        cls.get().run_all()
 
 
 def display():
-    init_session_state()
+    ProcessersManagerSState.init()
 
     if st.button(label="RUN"):
-        with st.container():
-            st.session_state[PROCESSER_LIST_STATE].run_all()
+        ProcessersManagerSState.on_click_run()

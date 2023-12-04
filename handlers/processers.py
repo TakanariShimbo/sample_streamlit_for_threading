@@ -21,18 +21,18 @@ class BaseProcesser(Thread, ABC):
 
     @abstractmethod
     def run(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def pre_process(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def post_process(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
 
 
-class BaseProcesserList(ABC):
+class BaseProcessersManager(ABC):
     def __init__(self, processer_class_list: List[Type[BaseProcesser]]) -> None:
         self.__processer_class_list = processer_class_list
         self.__processers = self.__init_processers(self.__processer_class_list)
@@ -69,12 +69,12 @@ class BaseProcesserList(ABC):
 
     @abstractmethod
     def pre_process_for_starting(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def pre_process_for_running(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def post_process(self):
-        pass
+        raise NotImplementedError("Subclasses must implement this method")
