@@ -7,18 +7,6 @@ class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
 
-    @abstractmethod
-    def run(self):
-        pass
-
-    @abstractmethod
-    def pre_process(self):
-        pass
-
-    @abstractmethod
-    def post_process(self):
-        pass
-
     def start_and_wait_to_complete(self):
         self.pre_process()
 
@@ -31,6 +19,18 @@ class BaseProcesser(Thread, ABC):
 
         self.post_process()
 
+    @abstractmethod
+    def run(self):
+        pass
+
+    @abstractmethod
+    def pre_process(self):
+        pass
+
+    @abstractmethod
+    def post_process(self):
+        pass
+
 
 class BaseProcesserList(ABC):
     def __init__(self, processer_class_list: List[Type[BaseProcesser]]) -> None:
@@ -39,25 +39,9 @@ class BaseProcesserList(ABC):
 
         self.__is_running = False
 
-    @abstractmethod
-    def pre_process_for_starting(self):
-        pass
-
-    @abstractmethod
-    def pre_process_for_running(self):
-        pass
-
-    @abstractmethod
-    def post_process(self):
-        pass
-
     @property
     def is_running(self):
         return self.__is_running
-
-    @staticmethod
-    def __init_processers(processer_class_list: List[Type[BaseProcesser]]) -> List[BaseProcesser]:
-        return [processer_class() for processer_class in processer_class_list]
 
     def run_all(self):
         # initialize processers if not running state
@@ -78,3 +62,19 @@ class BaseProcesserList(ABC):
 
         # run post-process
         self.post_process()
+
+    @staticmethod
+    def __init_processers(processer_class_list: List[Type[BaseProcesser]]) -> List[BaseProcesser]:
+        return [processer_class() for processer_class in processer_class_list]
+
+    @abstractmethod
+    def pre_process_for_starting(self):
+        pass
+
+    @abstractmethod
+    def pre_process_for_running(self):
+        pass
+
+    @abstractmethod
+    def post_process(self):
+        pass
