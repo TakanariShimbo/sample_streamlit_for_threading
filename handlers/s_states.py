@@ -28,9 +28,9 @@ class BaseSState(Generic[T], abc.ABC):
 
     @classmethod
     def reset(cls) -> None:
-        st.session_state[cls.get_name()] = cls.get_default()
+        cls.set(value=cls.get_default())
 
     @classmethod
     def init(cls) -> None:
         if not cls.get_name() in st.session_state:
-            st.session_state[cls.get_name()] = cls.get_default()
+            cls.reset()
