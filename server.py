@@ -1,3 +1,3 @@
-import streamlit as st
+from components import sample
 
-st.markdown("# Header")
+sample.display()
