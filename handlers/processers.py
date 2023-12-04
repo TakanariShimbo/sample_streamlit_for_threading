@@ -41,16 +41,16 @@ class BaseProcessersManager(ABC):
     def is_running(self):
         return self.__is_running
 
-    def run_all(self):
+    def run_all(self, **kwargs):
         # initialize processers if not running state
         if not self.__is_running:
             self.init_processers()
 
         # run pre-process
         if self.__is_running:
-            self.pre_process_for_running()
+            self.pre_process_for_running(**kwargs)
         else:
-            self.pre_process_for_starting()
+            self.pre_process_for_starting(**kwargs)
 
         # run main-processes
         self.__is_running = True
@@ -59,20 +59,20 @@ class BaseProcessersManager(ABC):
         self.__is_running = False
 
         # run post-process
-        self.post_process()
+        self.post_process(**kwargs)
 
     def init_processers(self):
         self.__processers = [processer_class() for processer_class in self.__processer_class_list]
         self.__is_running = False
 
     @abstractmethod
-    def pre_process_for_starting(self):
+    def pre_process_for_starting(self, **kwargs):
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process_for_running(self):
+    def pre_process_for_running(self, **kwargs):
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self):
+    def post_process(self, **kwargs):
         raise NotImplementedError("Subclasses must implement this method")

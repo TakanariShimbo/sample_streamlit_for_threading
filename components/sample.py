@@ -42,27 +42,28 @@ class Processer2(BaseProcesser):
 
 
 class ProcessersManager(BaseProcessersManager):
-    def set_form_area(self, form_area):
-        self.__form_area = form_area
-
-    def __add_message_area(self):
-        with self.__form_area:
+    def set_message_area(self, form_area):
+        with form_area:
             self.__message_area = st.empty()
 
-    def pre_process_for_starting(self):
-        self.__add_message_area()
-        self.__message_area.info("START")
+    def get_message_area(self):
+        return self.__message_area
+        
+    def pre_process_for_starting(self, **kwargs):
+        self.set_message_area(form_area=kwargs["form_area"])
+        self.get_message_area().info("START")
         st.markdown("### Result")
         print("---- START ----")
 
-    def pre_process_for_running(self):
-        self.__add_message_area()
-        self.__message_area.warning("ALREADY STARTED")
+    def pre_process_for_running(self, **kwargs):
+        self.set_message_area(form_area=kwargs["form_area"])
+        self.get_message_area().warning("RUNNING")
         st.markdown("### Result")
-        print("---- ALREADY STARTED ----")
+        print("---- RUNNING ----")
 
-    def post_process(self):
-        self.__message_area.info("FINISH")
+    def post_process(self, **kwargs):
+        self.get_message_area().info("FINISH")
+        st.balloons()
         print("---- FINISH ----")
 
 
@@ -78,13 +79,11 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
     @classmethod
     def on_click_run(cls, form_area) -> None:
         processers_manager = cls.get()
-        processers_manager.set_form_area(form_area=form_area)
-        processers_manager.run_all()
+        processers_manager.run_all(form_area=form_area)
 
     @classmethod
-    def on_click_reset(cls, form_area) -> None:
+    def on_click_reset(cls) -> None:
         processers_manager = cls.get()
-        processers_manager.set_form_area(form_area=form_area)
         processers_manager.init_processers()
 
 
@@ -105,9 +104,8 @@ def display_sample_contents():
             is_run_pushed = st.form_submit_button(label="RUN", use_container_width=True)
         with right_area:
             is_reset_pushed = st.form_submit_button(label="RESET", use_container_width=True)
-
     
     if is_run_pushed:
         ProcessersManagerSState.on_click_run(form_area=form_area)
     elif is_reset_pushed:
-        ProcessersManagerSState.on_click_reset(form_area=form_area)
+        ProcessersManagerSState.on_click_reset()
