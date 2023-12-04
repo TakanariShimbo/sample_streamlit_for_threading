@@ -35,8 +35,6 @@ class BaseProcesser(Thread, ABC):
 class BaseProcessersManager(ABC):
     def __init__(self, processer_class_list: List[Type[BaseProcesser]]) -> None:
         self.__processer_class_list = processer_class_list
-        self.__processers = self.__init_processers(self.__processer_class_list)
-
         self.__is_running = False
 
     @property
@@ -46,7 +44,7 @@ class BaseProcessersManager(ABC):
     def run_all(self):
         # initialize processers if not running state
         if not self.__is_running:
-            self.__processers = self.__init_processers(self.__processer_class_list)
+            self.init_processers()
 
         # run pre-process
         if self.__is_running:
@@ -63,9 +61,9 @@ class BaseProcessersManager(ABC):
         # run post-process
         self.post_process()
 
-    @staticmethod
-    def __init_processers(processer_class_list: List[Type[BaseProcesser]]) -> List[BaseProcesser]:
-        return [processer_class() for processer_class in processer_class_list]
+    def init_processers(self):
+        self.__processers = [processer_class() for processer_class in self.__processer_class_list]
+        self.__is_running = False
 
     @abstractmethod
     def pre_process_for_starting(self):
