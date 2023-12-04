@@ -1,4 +1,5 @@
 from time import sleep
+from textwrap import dedent
 
 import streamlit as st
 
@@ -41,17 +42,23 @@ class Processer2(BaseProcesser):
 
 
 class ProcessersManager(BaseProcessersManager):
+    def set_form_area(self, form_area):
+        self.__form_area = form_area
+
     def __add_message_area(self):
-        self.__message_area = st.empty()
+        with self.__form_area:
+            self.__message_area = st.empty()
 
     def pre_process_for_starting(self):
         self.__add_message_area()
         self.__message_area.info("START")
+        st.markdown("### Result")
         print("---- START ----")
 
     def pre_process_for_running(self):
         self.__add_message_area()
         self.__message_area.warning("ALREADY STARTED")
+        st.markdown("### Result")
         print("---- ALREADY STARTED ----")
 
     def post_process(self):
@@ -69,12 +76,25 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
         return ProcessersManager([Processer1, Processer2])
     
     @classmethod
-    def on_click_run(cls) -> None:
-        cls.get().run_all()
+    def on_click_run(cls, form_area) -> None:
+        processers_manager = cls.get()
+        processers_manager.set_form_area(form_area=form_area)
+        processers_manager.run_all()
 
 
-def display():
+def display_sample_contents():
     ProcessersManagerSState.init()
 
-    if st.button(label="RUN"):
-        ProcessersManagerSState.on_click_run()
+    contents = dedent("""
+        # Threading Demo  
+        This demo is sample of using thread for managing process 🦘  
+    """)
+    st.markdown(contents)
+
+    form_area = st.form(key="Form")
+    with form_area:
+        st.markdown("### Form")
+        is_submitted = st.form_submit_button(label="RUN")
+    
+    if is_submitted:
+        ProcessersManagerSState.on_click_run(form_area=form_area)
