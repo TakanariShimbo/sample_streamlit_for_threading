@@ -101,9 +101,9 @@ def display_sample_contents():
         st.markdown("### Form")
         _, left_area, _, right_area, _ = st.columns([1,3,1,3,1])
         with left_area:
-            is_run_pushed = st.form_submit_button(label="RUN", use_container_width=True)
+            is_run_pushed = st.form_submit_button(label="RUN", type="primary", use_container_width=True)
         with right_area:
-            is_reset_pushed = st.form_submit_button(label="RESET", use_container_width=True)
+            is_reset_pushed = st.form_submit_button(label="RESET", type="secondary", use_container_width=True)
     
     if is_run_pushed:
         ProcessersManagerSState.on_click_run(form_area=form_area)
