@@ -1,5 +1,5 @@
+from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
-import abc
 
 import streamlit as st
 
@@ -7,14 +7,14 @@ import streamlit as st
 T = TypeVar("T")
 
 
-class BaseSState(Generic[T], abc.ABC):
+class BaseSState(Generic[T], ABC):
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_name() -> str:
         raise NotImplementedError("Subclasses must implement this method")
 
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_default() -> T:
         raise NotImplementedError("Subclasses must implement this method")
 
