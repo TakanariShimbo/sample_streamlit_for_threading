@@ -25,6 +25,10 @@ class BaseSState(Generic[T], ABC):
         if not cls.get_name() in st.session_state:
             cls.reset()
 
+    @classmethod
+    def remove(cls) -> None:
+        del st.session_state[cls.get_name()]
+
     @staticmethod
     @abstractmethod
     def get_name() -> str:
