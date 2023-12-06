@@ -1,5 +1,3 @@
-from app import ConfigComponent, SampleComponent
+from app import SamplePage
 
-
-ConfigComponent.display()
-SampleComponent.display()
+SamplePage.display()

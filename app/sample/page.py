@@ -3,10 +3,18 @@ from textwrap import dedent
 import streamlit as st
 
 from .s_states import ProcessersManagerSState
-from .. import BaseComponent
+from .. import BasePage
 
 
-class SampleComponent(BaseComponent):
+class SamplePage(BasePage):
+    @staticmethod
+    def get_title() -> str:
+        return "Threading Demo"
+    
+    @staticmethod
+    def get_icon() -> str:
+        return "🦘"
+    
     @staticmethod
     def init() -> None:
         ProcessersManagerSState.init()

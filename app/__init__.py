@@ -1,3 +1,2 @@
-from .base import BaseComponent, BaseProcesser, BaseProcessersManager, BaseSState
-from .config import ConfigComponent
-from .sample import SampleComponent
+from .base import BasePage, BaseProcesser, BaseProcessersManager, BaseSState
+from .sample import SamplePage
