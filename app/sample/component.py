@@ -8,9 +8,11 @@ from .. import BaseComponent
 
 class SampleComponent(BaseComponent):
     @staticmethod
-    def display() -> None:
+    def init() -> None:
         ProcessersManagerSState.init()
 
+    @staticmethod
+    def main() -> None:
         contents = dedent("""
             # Threading Demo  
             This demo is sample of using thread for managing process 🦘  

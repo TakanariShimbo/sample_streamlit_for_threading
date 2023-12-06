@@ -7,7 +7,11 @@ from .. import BaseComponent
 
 class ConfigComponent(BaseComponent):
     @staticmethod
-    def display() -> None:
+    def init() -> None:
+        pass
+    
+    @staticmethod
+    def main() -> None:
         st.set_page_config(
             page_title="Threading Demo",
             page_icon="🦘",
