@@ -20,3 +20,9 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
     def on_click_reset(cls) -> None:
         processers_manager = cls.get()
         processers_manager.init_processers()
+
+    @classmethod
+    def on_click_rerun(cls, form_area) -> None:
+        processers_manager = cls.get()
+        processers_manager.init_processers()
+        processers_manager.run_all(form_area=form_area)
