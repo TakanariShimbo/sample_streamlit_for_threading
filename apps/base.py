@@ -3,7 +3,7 @@ from textwrap import dedent
 import streamlit as st
 
 
-def set_page_configs() -> None:
+def display() -> None:
     st.set_page_config(
         page_title="Threading Demo",
         page_icon="🦘",
