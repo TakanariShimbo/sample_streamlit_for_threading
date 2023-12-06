@@ -36,42 +36,38 @@ class BaseProcessersManager(ABC):
     def __init__(self, processer_class_list: List[Type[BaseProcesser]]) -> None:
         self.__processer_class_list = processer_class_list
         self.__is_running = False
-        self.__called_count = 0
 
     @property
     def is_running(self) -> bool:
         return self.__is_running
-    
-    @property
-    def called_count(self) -> int:
-        return self.__called_count
 
     def run_all(self, **kwargs) -> None:
-        self.__called_count += 1
-        
+        is_running = self.__is_running        
+
         # initialize processers if not running state
-        if not self.__is_running:
+        if not is_running:
             self.init_processers()
 
+        self.__is_running = True
+
         # run pre-process
-        if self.__is_running:
+        if is_running:
             self.pre_process_for_running(**kwargs)
         else:
             self.pre_process_for_starting(**kwargs)
 
         # run main-processes
-        self.__is_running = True
         for processer in self.__processers:
             processer.start_and_wait_to_complete()
-        self.__is_running = False
 
         # run post-process
         self.post_process(**kwargs)
 
+        self.__is_running = False
+
     def init_processers(self) -> None:
         self.__processers = [processer_class() for processer_class in self.__processer_class_list]
         self.__is_running = False
-        self.__called_count = 0
 
     @abstractmethod
     def pre_process_for_starting(self, **kwargs) -> None:
