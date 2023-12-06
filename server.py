@@ -1,5 +1,5 @@
-from apps import config, sample
+from app import ConfigComponent, SampleComponent
 
 
-config.display()
-sample.display()
+ConfigComponent.display()
+SampleComponent.display()

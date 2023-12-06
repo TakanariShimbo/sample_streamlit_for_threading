@@ -2,7 +2,7 @@ from time import sleep
 
 import streamlit as st
 
-from ..bases.processers import BaseProcesser, BaseProcessersManager
+from .. import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):

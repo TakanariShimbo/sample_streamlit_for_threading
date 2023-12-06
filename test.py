@@ -1,6 +1,6 @@
 from time import sleep
 
-from apps.bases.processers import BaseProcesser, BaseProcessersManager
+from app import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):

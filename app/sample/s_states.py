@@ -1,5 +1,5 @@
-from ..bases.s_states import BaseSState
 from .processers import Processer1, Processer2, ProcessersManager
+from .. import BaseSState
 
 
 class ProcessersManagerSState(BaseSState[ProcessersManager]):

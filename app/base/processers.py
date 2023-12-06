@@ -7,7 +7,7 @@ class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
 
-    def start_and_wait_to_complete(self):
+    def start_and_wait_to_complete(self) -> None:
         self.pre_process()
 
         try:
@@ -20,15 +20,15 @@ class BaseProcesser(Thread, ABC):
         self.post_process()
 
     @abstractmethod
-    def run(self):
+    def run(self) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process(self):
+    def pre_process(self) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self):
+    def post_process(self) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
 
@@ -38,10 +38,10 @@ class BaseProcessersManager(ABC):
         self.__is_running = False
 
     @property
-    def is_running(self):
+    def is_running(self) -> bool:
         return self.__is_running
 
-    def run_all(self, **kwargs):
+    def run_all(self, **kwargs) -> None:
         # initialize processers if not running state
         if not self.__is_running:
             self.init_processers()
@@ -61,18 +61,18 @@ class BaseProcessersManager(ABC):
         # run post-process
         self.post_process(**kwargs)
 
-    def init_processers(self):
+    def init_processers(self) -> None:
         self.__processers = [processer_class() for processer_class in self.__processer_class_list]
         self.__is_running = False
 
     @abstractmethod
-    def pre_process_for_starting(self, **kwargs):
+    def pre_process_for_starting(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process_for_running(self, **kwargs):
+    def pre_process_for_running(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs):
+    def post_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
