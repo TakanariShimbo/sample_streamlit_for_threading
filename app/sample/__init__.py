@@ -1,1 +1,1 @@
-from .page import SamplePage
+from .component import SampleComponent

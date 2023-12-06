@@ -1,3 +1,3 @@
-from app import SamplePage
+from app import HomePage
 
-SamplePage.display()
+HomePage.display()

@@ -3,24 +3,16 @@ from textwrap import dedent
 import streamlit as st
 
 from .s_states import ProcessersManagerSState
-from .. import BasePage
+from .. import BaseComponent
 
 
-class SamplePage(BasePage):
-    @staticmethod
-    def get_title() -> str:
-        return "Threading Demo"
-    
-    @staticmethod
-    def get_icon() -> str:
-        return "🦘"
-    
+class SampleComponent(BaseComponent):    
     @staticmethod
     def init() -> None:
         ProcessersManagerSState.init()
 
     @staticmethod
-    def main() -> None:
+    def main() -> None:       
         contents = dedent("""
             # Threading Demo  
             This demo is sample of using thread for managing process 🦘  

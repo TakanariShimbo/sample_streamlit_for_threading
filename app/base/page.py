@@ -4,10 +4,10 @@ from textwrap import dedent
 import streamlit as st
 
 
-class BasePage(ABC):        
+class BasePage(ABC):
     @classmethod
     def display(cls) -> None:
-        cls.set_config(title=cls.get_title(), icon=cls.get_icon())
+        cls.set_config(title="Threading Demo", icon="🦘")
         cls.init()
         cls.main()
 
@@ -28,7 +28,7 @@ class BasePage(ABC):
             [data-testid="stToolbar"] {visibility: hidden !important;}
             footer {visibility: hidden !important;}
             </style>
-        """
+            """
         )
         st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
@@ -36,12 +36,12 @@ class BasePage(ABC):
     @abstractmethod
     def get_title() -> str:
         raise NotImplementedError("Subclasses must implement this method")
-    
+
     @staticmethod
     @abstractmethod
     def get_icon() -> str:
         raise NotImplementedError("Subclasses must implement this method")
-    
+
     @staticmethod
     @abstractmethod
     def init() -> None:
