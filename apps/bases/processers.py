@@ -12,7 +12,7 @@ class BaseProcesser(Thread, ABC):
 
         try:
             self.start()
-        except RuntimeError as e:
+        except RuntimeError:
             pass
         finally:
             self.join()

@@ -8,16 +8,6 @@ T = TypeVar("T")
 
 
 class BaseSState(Generic[T], ABC):
-    @staticmethod
-    @abstractmethod
-    def get_name() -> str:
-        raise NotImplementedError("Subclasses must implement this method")
-
-    @staticmethod
-    @abstractmethod
-    def get_default() -> T:
-        raise NotImplementedError("Subclasses must implement this method")
-
     @classmethod
     def get(cls) -> T:
         return st.session_state[cls.get_name()]
@@ -34,3 +24,13 @@ class BaseSState(Generic[T], ABC):
     def init(cls) -> None:
         if not cls.get_name() in st.session_state:
             cls.reset()
+
+    @staticmethod
+    @abstractmethod
+    def get_name() -> str:
+        raise NotImplementedError("Subclasses must implement this method")
+
+    @staticmethod
+    @abstractmethod
+    def get_default() -> T:
+        raise NotImplementedError("Subclasses must implement this method")
