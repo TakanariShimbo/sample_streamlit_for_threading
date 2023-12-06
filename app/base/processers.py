@@ -47,6 +47,8 @@ class BaseProcessersManager(ABC):
         return self.__called_count
 
     def run_all(self, **kwargs) -> None:
+        self.__called_count += 1
+        
         # initialize processers if not running state
         if not self.__is_running:
             self.init_processers()
@@ -59,7 +61,6 @@ class BaseProcessersManager(ABC):
 
         # run main-processes
         self.__is_running = True
-        self.__called_count += 1
         for processer in self.__processers:
             processer.start_and_wait_to_complete()
         self.__is_running = False
