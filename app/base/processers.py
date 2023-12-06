@@ -19,8 +19,11 @@ class BaseProcesser(Thread, ABC):
 
         self.post_process()
 
-    @abstractmethod
     def run(self) -> None:
+        self.main_process()
+    
+    @abstractmethod
+    def main_process(self) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod

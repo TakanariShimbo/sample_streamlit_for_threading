@@ -6,7 +6,7 @@ from .. import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):
-    def run(self):
+    def main_process(self):
         for i in range(5):
             sleep(1)
             print(i)
@@ -23,7 +23,7 @@ class Processer1(BaseProcesser):
 
 
 class Processer2(BaseProcesser):
-    def run(self):
+    def main_process(self):
         for i in range(5):
             sleep(1)
             print(i)
