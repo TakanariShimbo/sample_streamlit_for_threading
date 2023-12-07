@@ -1,29 +1,22 @@
-import json
 from time import sleep
-from textwrap import dedent
 
 from streamlit_lottie import st_lottie
 
 from .s_states import WakeupSState
 from .. import BaseComponent
+from handlers.json_handler import JsonHandler
 
 
-def load_jsonfile(filepath: str):
-    with open(filepath, "r") as f:
-        return json.load(f)
+class WakeupComponent(BaseComponent):
+    STREAMLIT_LOGO = JsonHandler.load("./static/lotties/streamlit_logo.json")
 
-
-STREAMLIT_LOGO_LOTTIE = load_jsonfile("./static/lotties/streamlit_logo.json")
-
-
-class WakeupComponent(BaseComponent):    
-    @staticmethod
-    def init() -> None:
+    @classmethod
+    def init(cls) -> None:
         pass
 
-    @staticmethod
-    def main() -> None:
-        st_lottie(STREAMLIT_LOGO_LOTTIE, key="STREAMLIT_LOGO_LOTTIE", speed=1.1, reverse=False, loop=False)
+    @classmethod
+    def main(cls) -> None:
+        st_lottie(cls.STREAMLIT_LOGO, key="STREAMLIT_LOGO_LOTTIE", speed=1.15, reverse=False, loop=False)
         sleep(4)
         WakeupSState.compolete_wakeup()
 

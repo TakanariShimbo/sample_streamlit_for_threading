@@ -6,12 +6,12 @@ from .. import BasePage, MainComponent, WakeupComponent, WakeupSState
 
 
 class HomePage(BasePage):    
-    @staticmethod
-    def init() -> None:
+    @classmethod
+    def init(cls) -> None:
         WakeupSState.init()
 
-    @staticmethod
-    def main() -> None:
+    @classmethod
+    def main(cls) -> None:
         if WakeupSState.get():
             WakeupComponent.display()
             st.rerun()

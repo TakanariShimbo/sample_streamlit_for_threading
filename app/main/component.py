@@ -7,12 +7,12 @@ from .. import BaseComponent
 
 
 class MainComponent(BaseComponent):    
-    @staticmethod
-    def init() -> None:
+    @classmethod
+    def init(cls) -> None:
         ProcessersManagerSState.init()
 
-    @staticmethod
-    def main() -> None:       
+    @classmethod
+    def main(cls) -> None:       
         contents = dedent("""
             # Threading Demo  
             This demo is sample of using thread for managing process 🦘  
