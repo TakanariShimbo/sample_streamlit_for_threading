@@ -16,6 +16,6 @@ class WakeupComponent(BaseComponent):
 
     @classmethod
     def main(cls) -> None:
-        st_lottie(cls.STREAMLIT_LOGO, key="STREAMLIT_LOGO_LOTTIE", speed=1.15, reverse=False, loop=False)
+        st_lottie(cls.STREAMLIT_LOGO, key="STREAMLIT_LOGO_LOTTIE", speed=1.2, reverse=False, loop=False)
         sleep(4)
         WakeupSState.compolete_wakeup()
