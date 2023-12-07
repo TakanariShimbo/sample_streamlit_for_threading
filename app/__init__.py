@@ -1,4 +1,4 @@
 from .base import BasePage, BaseComponent, BaseProcesser, BaseProcessersManager, BaseSState
 from .wakeup import WakeupComponent, WakeupSState
-from .sample import SampleComponent
+from .main import MainComponent
 from .home import HomePage

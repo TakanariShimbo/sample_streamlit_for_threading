@@ -2,7 +2,7 @@ from textwrap import dedent
 
 import streamlit as st
 
-from . import BasePage, SampleComponent, WakeupComponent, WakeupSState
+from .. import BasePage, MainComponent, WakeupComponent, WakeupSState
 
 
 class HomePage(BasePage):    
@@ -16,4 +16,4 @@ class HomePage(BasePage):
             WakeupComponent.display()
             st.rerun()
 
-        SampleComponent.display()
+        MainComponent.display()

@@ -6,7 +6,7 @@ from .s_states import ProcessersManagerSState
 from .. import BaseComponent
 
 
-class SampleComponent(BaseComponent):    
+class MainComponent(BaseComponent):    
     @staticmethod
     def init() -> None:
         ProcessersManagerSState.init()
