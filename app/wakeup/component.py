@@ -4,7 +4,7 @@ from streamlit_lottie import st_lottie
 
 from .s_states import WakeupSState
 from .. import BaseComponent
-from handlers.json_handler import JsonHandler
+from handler.json_handler import JsonHandler
 
 
 class WakeupComponent(BaseComponent):
@@ -19,5 +19,3 @@ class WakeupComponent(BaseComponent):
         st_lottie(cls.STREAMLIT_LOGO, key="STREAMLIT_LOGO_LOTTIE", speed=1.15, reverse=False, loop=False)
         sleep(4)
         WakeupSState.compolete_wakeup()
-
-

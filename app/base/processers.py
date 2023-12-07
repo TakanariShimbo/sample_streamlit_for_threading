@@ -21,7 +21,7 @@ class BaseProcesser(Thread, ABC):
 
     def run(self) -> None:
         self.main_process()
-    
+
     @abstractmethod
     def main_process(self) -> None:
         raise NotImplementedError("Subclasses must implement this method")
@@ -45,7 +45,7 @@ class BaseProcessersManager(ABC):
         return self.__is_running
 
     def run_all(self, **kwargs) -> None:
-        is_running = self.__is_running        
+        is_running = self.__is_running
 
         # initialize processers if not running state
         if not is_running:

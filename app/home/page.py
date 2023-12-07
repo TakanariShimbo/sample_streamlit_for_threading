@@ -5,7 +5,7 @@ import streamlit as st
 from .. import BasePage, MainComponent, WakeupComponent, WakeupSState
 
 
-class HomePage(BasePage):    
+class HomePage(BasePage):
     @classmethod
     def init(cls) -> None:
         WakeupSState.init()

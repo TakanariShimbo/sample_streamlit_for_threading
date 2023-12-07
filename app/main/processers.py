@@ -46,7 +46,7 @@ class ProcessersManager(BaseProcessersManager):
 
     def get_message_area(self):
         return self.__message_area
-        
+
     def pre_process_for_starting(self, **kwargs):
         self.set_message_area(form_area=kwargs["form_area"])
         self.get_message_area().info("START")

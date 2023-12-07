@@ -10,7 +10,7 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
     @staticmethod
     def get_default() -> ProcessersManager:
         return ProcessersManager([Processer1, Processer2])
-    
+
     @classmethod
     def on_click_run(cls, form_area) -> None:
         processers_manager = cls.get()
