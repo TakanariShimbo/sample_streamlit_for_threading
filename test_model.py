@@ -1,3 +1,4 @@
 from model import AnimalTable
 
-print(AnimalTable.get_all_entities())
+for entity in AnimalTable.get_all_entities():
+    print(entity)

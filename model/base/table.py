@@ -1,19 +1,23 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import List, Dict, Any, TypeVar, Generic, Type
 
 import pandas as pd
 
 from . import ColumnConfig
+from . import BaseEntity
 
 
-class BaseTable(ABC):
+E = TypeVar("E", bound=BaseEntity)
+
+
+class BaseTable(Generic[E], ABC):
     @classmethod
-    def get_all_entities(cls) -> List[pd.Series]:
+    def get_all_entities(cls) -> List[E]:
         table = cls.__get_table()
-        return [row for _, row in table.iterrows()]
+        return [cls.get_entiry_class()(series=row) for _, row in table.iterrows()]
 
     @classmethod
-    def get_entity(cls, column_name: str, value: Any) -> pd.Series:
+    def get_entity(cls, column_name: str, value: Any) -> E:
         table = cls.__get_table()
         mask = table.loc[:, column_name] == value
         matching_entities = table.loc[mask, :]
@@ -21,15 +25,13 @@ class BaseTable(ABC):
             raise ValueError(f"No rows found for {column_name}={value}")
         elif matching_entities.shape[0] > 1:
             raise ValueError(f"Multiple rows found for {column_name}={value}")
-        return matching_entities.iloc[0]
+        return cls.get_entiry_class()(series=matching_entities.iloc[0])
 
     @classmethod
     def __get_table(cls) -> pd.DataFrame:
-        try:
-            return cls.table
-        except:
+        if not hasattr(cls, "table"):
             cls.table = cls.__read_csv()
-            return cls.table
+        return cls.table
 
     @classmethod
     def __read_csv(cls) -> pd.DataFrame:
@@ -57,4 +59,9 @@ class BaseTable(ABC):
     @staticmethod
     @abstractmethod
     def get_column_config_list() -> List[ColumnConfig]:
+        raise NotImplementedError("Subclasses must implement this method")
+
+    @staticmethod
+    @abstractmethod
+    def get_entiry_class() -> Type[E]:
         raise NotImplementedError("Subclasses must implement this method")

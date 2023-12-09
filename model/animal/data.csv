@@ -1,3 +1,3 @@
-id,value,label_en,label_jp
-1,dog,DOG,犬
-2,cat,CAT,猫
+key,filepath,label_en,label_jp
+dog,./static/images/dog.jpg,DOG,犬
+cat,./static/images/cat.jpg,CAT,猫
