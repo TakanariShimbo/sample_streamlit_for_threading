@@ -1,5 +1,6 @@
 from time import sleep
 
+import cv2
 import streamlit as st
 
 from .. import BaseProcesser, BaseProcessersManager
@@ -61,5 +62,10 @@ class ProcessersManager(BaseProcessersManager):
 
     def post_process(self, **kwargs):
         self.get_message_area().info("FINISH")
+        st.image(
+            image=cv2.imread(filename=kwargs["form_schema"].image_filepath),
+            caption=kwargs["form_schema"].animal_type,
+            channels="BGR",
+        )
         st.balloons()
         print("---- FINISH ----")
