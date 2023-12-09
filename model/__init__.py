@@ -1,2 +1,2 @@
 from .base import ColumnConfig, BaseEntity, BaseTable
-from .animal import AnimalTable
+from .animal import AnimalEntity, AnimalTable
