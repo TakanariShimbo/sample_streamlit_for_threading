@@ -8,35 +8,35 @@ from .. import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):
-    def main_process(self):
+    def main_process(self, **kwargs):
         for i in range(5):
             sleep(1)
             print(i)
 
-    def pre_process(self):
+    def pre_process(self, **kwargs):
         st.write("* PROCESSER 1")
         st.write("** START")
         print("* PROCESSER 1")
         print("** START")
 
-    def post_process(self):
+    def post_process(self, **kwargs):
         st.write("** FINISH")
         print("** FINISH")
 
 
 class Processer2(BaseProcesser):
-    def main_process(self):
+    def main_process(self, **kwargs):
         for i in range(5):
             sleep(1)
             print(i)
 
-    def pre_process(self):
+    def pre_process(self, **kwargs):
         st.write("* PROCESSER 2")
         st.write("** START")
         print("* PROCESSER 2")
         print("** START")
 
-    def post_process(self):
+    def post_process(self, **kwargs):
         st.write("** FINISH")
         print("** FINISH")
 

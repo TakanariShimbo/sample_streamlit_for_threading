@@ -7,8 +7,9 @@ class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
 
-    def start_and_wait_to_complete(self) -> None:
-        self.pre_process()
+    def start_and_wait_to_complete(self, **kwargs) -> None:
+        self._kwargs = kwargs
+        self.pre_process(**self._kwargs)
 
         try:
             self.start()
@@ -17,21 +18,21 @@ class BaseProcesser(Thread, ABC):
         finally:
             self.join()
 
-        self.post_process()
+        self.post_process(**self._kwargs)
 
     def run(self) -> None:
-        self.main_process()
+        self.main_process(**self._kwargs)
 
     @abstractmethod
-    def main_process(self) -> None:
+    def main_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process(self) -> None:
+    def pre_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self) -> None:
+    def post_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
 
