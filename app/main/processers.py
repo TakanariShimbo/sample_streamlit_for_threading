@@ -3,7 +3,6 @@ from time import sleep
 import cv2
 import streamlit as st
 
-from .schema import FormSchema
 from .. import BaseProcesser, BaseProcessersManager
 
 
@@ -12,6 +11,8 @@ class Processer1(BaseProcesser):
         for i in range(5):
             sleep(1)
             print(i)
+        kwargs["filepath"] = kwargs["form_schema"].image_filepath
+        kwargs["animal_type"] = kwargs["form_schema"].animal_type
         return kwargs
 
     def pre_process(self, **kwargs):
@@ -32,6 +33,7 @@ class Processer2(BaseProcesser):
         for i in range(5):
             sleep(1)
             print(i)
+        kwargs["image"] = cv2.imread(filename=kwargs["filepath"])
         return kwargs
 
     def pre_process(self, **kwargs):
@@ -48,39 +50,27 @@ class Processer2(BaseProcesser):
 
 
 class ProcessersManager(BaseProcessersManager):
-    def set_form_area(self, form_area):
-        with form_area:
-            self.__form_area = st.empty()
-
-    def get_form_area(self):
-        return self.__form_area
-
-    def set_form_schema(self, form_schema: FormSchema):
-        self.__form_schema = form_schema
-
-    def get_form_schema(self) -> FormSchema:
-        return self.__form_schema
-
     def pre_process_for_starting(self, **kwargs):
-        self.set_form_area(form_area=kwargs["form_area"])
-        self.set_form_schema(form_schema=kwargs["form_schema"])
-        self.get_form_area().info("START")
+        with kwargs["form_area"]:
+            kwargs["message_area"] = st.empty()
+        kwargs["message_area"].info("START")
         st.markdown("### Result")
         print("---- START ----")
         return kwargs
 
     def pre_process_for_running(self, **kwargs):
-        self.set_form_area(form_area=kwargs["form_area"])
-        self.get_form_area().warning("RUNNING")
+        with kwargs["form_area"]:
+            kwargs["message_area"] = st.empty()
+        kwargs["message_area"].warning("RUNNING")
         st.markdown("### Result")
         print("---- RUNNING ----")
         return kwargs
 
     def post_process(self, **kwargs):
-        self.get_form_area().info("FINISH")
+        kwargs["message_area"].info("FINISH")
         st.image(
-            image=cv2.imread(filename=self.get_form_schema().image_filepath),
-            caption=self.get_form_schema().animal_type,
+            image=kwargs["image"],
+            caption=kwargs["animal_type"],
             channels="BGR",
         )
         st.balloons()
