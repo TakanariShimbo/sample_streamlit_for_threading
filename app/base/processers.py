@@ -1,15 +1,19 @@
 from abc import ABC, abstractmethod
 from threading import Thread
-from typing import List, Type
+from typing import List, Type, Dict, Any
 
 
 class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
 
+    @property
+    def kwargs(self) -> Dict[str, Any]:
+        return self.__kwargs
+    
     def start_and_wait_to_complete(self, **kwargs) -> None:
-        self._kwargs = kwargs
-        self.pre_process(**self._kwargs)
+        self.__kwargs = kwargs
+        self.__kwargs = self.pre_process(**self.__kwargs)
 
         try:
             self.start()
@@ -18,21 +22,21 @@ class BaseProcesser(Thread, ABC):
         finally:
             self.join()
 
-        self.post_process(**self._kwargs)
+        self.__kwargs = self.post_process(**self.__kwargs)
 
     def run(self) -> None:
-        self.main_process(**self._kwargs)
+        self.__kwargs = self.main_process(**self.__kwargs)
 
     @abstractmethod
-    def main_process(self, **kwargs) -> None:
+    def main_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process(self, **kwargs) -> None:
+    def pre_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs) -> None:
+    def post_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
 
@@ -56,13 +60,14 @@ class BaseProcessersManager(ABC):
 
         # run pre-process
         if is_running:
-            self.pre_process_for_running(**kwargs)
+            kwargs = self.pre_process_for_running(**kwargs)
         else:
-            self.pre_process_for_starting(**kwargs)
+            kwargs = self.pre_process_for_starting(**kwargs)
 
         # run main-processes
         for processer in self.__processers:
-            processer.start_and_wait_to_complete()
+            processer.start_and_wait_to_complete(**kwargs)
+            kwargs = processer.kwargs
 
         # run post-process
         self.post_process(**kwargs)
@@ -74,13 +79,13 @@ class BaseProcessersManager(ABC):
         self.__is_running = False
 
     @abstractmethod
-    def pre_process_for_starting(self, **kwargs) -> None:
+    def pre_process_for_starting(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process_for_running(self, **kwargs) -> None:
+    def pre_process_for_running(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs) -> None:
+    def post_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
