@@ -12,16 +12,19 @@ class Processer1(BaseProcesser):
         for i in range(5):
             sleep(1)
             print(i)
+        return kwargs
 
     def pre_process(self, **kwargs):
         st.write("* PROCESSER 1")
         st.write("** START")
         print("* PROCESSER 1")
         print("** START")
+        return kwargs
 
     def post_process(self, **kwargs):
         st.write("** FINISH")
         print("** FINISH")
+        return kwargs
 
 
 class Processer2(BaseProcesser):
@@ -29,16 +32,19 @@ class Processer2(BaseProcesser):
         for i in range(5):
             sleep(1)
             print(i)
+        return kwargs
 
     def pre_process(self, **kwargs):
         st.write("* PROCESSER 2")
         st.write("** START")
         print("* PROCESSER 2")
         print("** START")
+        return kwargs
 
     def post_process(self, **kwargs):
         st.write("** FINISH")
         print("** FINISH")
+        return kwargs
 
 
 class ProcessersManager(BaseProcessersManager):
@@ -61,12 +67,14 @@ class ProcessersManager(BaseProcessersManager):
         self.get_form_area().info("START")
         st.markdown("### Result")
         print("---- START ----")
+        return kwargs
 
     def pre_process_for_running(self, **kwargs):
         self.set_form_area(form_area=kwargs["form_area"])
         self.get_form_area().warning("RUNNING")
         st.markdown("### Result")
         print("---- RUNNING ----")
+        return kwargs
 
     def post_process(self, **kwargs):
         self.get_form_area().info("FINISH")
