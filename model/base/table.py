@@ -13,12 +13,12 @@ E = TypeVar("E", bound=BaseEntity)
 class BaseTable(Generic[E], ABC):
     @classmethod
     def get_all_entities(cls) -> List[E]:
-        table = cls.__get_table()
+        table = cls._get_table()
         return [cls.get_entiry_class()(series=row) for _, row in table.iterrows()]
 
     @classmethod
     def get_entity(cls, column_name: str, value: Any) -> E:
-        table = cls.__get_table()
+        table = cls._get_table()
         mask = table.loc[:, column_name] == value
         matching_entities = table.loc[mask, :]
         if matching_entities.empty:
@@ -28,23 +28,23 @@ class BaseTable(Generic[E], ABC):
         return cls.get_entiry_class()(series=matching_entities.iloc[0])
 
     @classmethod
-    def __get_table(cls) -> pd.DataFrame:
+    def _get_table(cls) -> pd.DataFrame:
         if not hasattr(cls, "table"):
-            cls.table = cls.__read_csv()
+            cls.table = cls._read_csv()
         return cls.table
 
     @classmethod
-    def __read_csv(cls) -> pd.DataFrame:
-        df = pd.read_csv(cls.get_filepath(), dtype=cls.__get_dtypes())
-        cls.__validate(df)
+    def _read_csv(cls) -> pd.DataFrame:
+        df = pd.read_csv(cls.get_filepath(), dtype=cls._get_dtypes())
+        cls._validate(df)
         return df
 
     @classmethod
-    def __get_dtypes(cls) -> Dict[str, Any]:
+    def _get_dtypes(cls) -> Dict[str, Any]:
         return {column_config.name: column_config.dtype for column_config in cls.get_column_config_list()}
 
     @classmethod
-    def __validate(cls, df: pd.DataFrame) -> None:
+    def _validate(cls, df: pd.DataFrame) -> None:
         for column_config in cls.get_column_config_list():
             if column_config.unique and df[column_config.name].duplicated().any():
                 raise ValueError(f"Column {column_config.name} has duplicate values")
