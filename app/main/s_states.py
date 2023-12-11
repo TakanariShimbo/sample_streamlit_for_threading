@@ -1,5 +1,4 @@
 from .processers import Processer1, Processer2, ProcessersManager
-from .schema import FormSchema
 from .. import BaseSState
 
 
@@ -13,9 +12,9 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
         return ProcessersManager([Processer1, Processer2])
 
     @classmethod
-    def on_click_run(cls, form_area, form_schema: FormSchema) -> None:
+    def on_click_run(cls, **kwargs) -> None:
         processers_manager = cls.get()
-        processers_manager.run_all(form_area=form_area, form_schema=form_schema)
+        processers_manager.run_all(**kwargs)
 
     @classmethod
     def on_click_reset(cls) -> None:
@@ -23,7 +22,7 @@ class ProcessersManagerSState(BaseSState[ProcessersManager]):
         processers_manager.init_processers()
 
     @classmethod
-    def on_click_rerun(cls, form_area, form_schema: FormSchema) -> None:
+    def on_click_rerun(cls, **kwargs) -> None:
         processers_manager = cls.get()
         processers_manager.init_processers()
-        processers_manager.run_all(form_area=form_area, form_schema=form_schema)
+        processers_manager.run_all(**kwargs)

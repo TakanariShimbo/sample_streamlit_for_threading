@@ -28,14 +28,14 @@ class MainComponent(BaseComponent):
             st.markdown("### Form")
 
             selected_animal_entity = st.selectbox(
-                label="Animal Type", 
+                label="Animal Type",
                 options=AnimalTable.get_all_entities(),
-                format_func= lambda enetity: enetity.label_en,
+                format_func=lambda enetity: enetity.label_en,
                 key="AnimalTypeSelectBox",
             )
 
             inputed_image_discription = st.text_input(
-                label="Image Description", 
+                label="Image Description",
                 key="ImageDescriptionTextInput",
             )
 
@@ -48,14 +48,16 @@ class MainComponent(BaseComponent):
                 is_reset_pushed = st.form_submit_button(label="RESET", type="secondary", use_container_width=True)
 
         if is_run_pushed:
-            if not selected_animal_entity:
-                return
-            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity, image_discription=inputed_image_discription)
-            ProcessersManagerSState.on_click_run(form_area=form_area, form_schema=form_schema)
+            ProcessersManagerSState.on_click_run(
+                form_area=form_area,
+                animal_entity=selected_animal_entity,
+                image_discription=inputed_image_discription,
+            )
         elif is_rerun_pushed:
-            if not selected_animal_entity:
-                return
-            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity, image_discription=inputed_image_discription)
-            ProcessersManagerSState.on_click_rerun(form_area=form_area, form_schema=form_schema)
+            ProcessersManagerSState.on_click_rerun(
+                form_area=form_area,
+                animal_entity=selected_animal_entity,
+                image_discription=inputed_image_discription,
+            )
         elif is_reset_pushed:
             ProcessersManagerSState.on_click_reset()

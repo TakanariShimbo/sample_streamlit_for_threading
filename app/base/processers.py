@@ -13,7 +13,6 @@ class BaseProcesser(Thread, ABC):
     
     def start_and_wait_to_complete(self, **kwargs) -> None:
         self.__kwargs = kwargs
-        self.__kwargs = self.pre_process(**self.__kwargs)
 
         try:
             self.start()
@@ -32,12 +31,13 @@ class BaseProcesser(Thread, ABC):
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process(self, **kwargs) -> Dict[str, Any]:
-        raise NotImplementedError("Subclasses must implement this method")
-
-    @abstractmethod
     def post_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
+
+
+class EarlyStopProcessException(Exception):
+    def __init__(self, message="Process stopped earlier than expected"):
+        super().__init__(message)
 
 
 class BaseProcessersManager(ABC):
@@ -51,20 +51,21 @@ class BaseProcessersManager(ABC):
 
     def run_all(self, **kwargs) -> None:
         is_running = self.__is_running
-
-        # initialize processers if not running state
-        if not is_running:
-            self.init_processers()
-
         self.__is_running = True
 
         # run pre-process
-        if is_running:
-            kwargs = self.pre_process_for_running(**kwargs)
+        if not is_running:
+            self.__processers = [processer_class() for processer_class in self.__processer_class_list]
+            try:
+                self.__kwargs = self.pre_process_for_starting(**kwargs)
+            except EarlyStopProcessException:
+                self.__is_running = is_running
+                return
         else:
-            kwargs = self.pre_process_for_starting(**kwargs)
+            self.pre_process_for_running(**kwargs)
 
         # run main-processes
+        kwargs = self.__kwargs
         for processer in self.__processers:
             processer.start_and_wait_to_complete(**kwargs)
             kwargs = processer.kwargs
