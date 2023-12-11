@@ -13,11 +13,9 @@ class Processer1(BaseProcesser):
     def pre_process(self, **kwargs):
         print("* PROCESSER 1")
         print("** START")
-        return kwargs
 
     def post_process(self, **kwargs):
         print("** FINISH")
-        return kwargs
 
 
 class Processer2(BaseProcesser):
@@ -30,11 +28,9 @@ class Processer2(BaseProcesser):
     def pre_process(self, **kwargs):
         print("* PROCESSER 2")
         print("** START")
-        return kwargs
 
     def post_process(self, **kwargs):
         print("** FINISH")
-        return kwargs
 
 
 class ProcesserList(BaseProcessersManager):

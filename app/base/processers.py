@@ -6,14 +6,18 @@ from typing import List, Type, Dict, Any
 class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
+        self._called = False
 
     @property
     def kwargs(self) -> Dict[str, Any]:
         return self._kwargs
 
     def start_and_wait_to_complete(self, **kwargs) -> None:
-        self._kwargs = kwargs
-        self._kwargs = self.pre_process(**self._kwargs)
+        if not self._called:
+            self._kwargs = kwargs
+            self._called = True
+
+        self.pre_process(**self._kwargs)
 
         try:
             self.start()
@@ -22,21 +26,21 @@ class BaseProcesser(Thread, ABC):
         finally:
             self.join()
 
-        self._kwargs = self.post_process(**self._kwargs)
+        self.post_process(**self._kwargs)
 
     def run(self) -> None:
         self._kwargs = self.main_process(**self._kwargs)
-
-    @abstractmethod
-    def pre_process(self, **kwargs) -> Dict[str, Any]:
-        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def main_process(self, **kwargs) -> Dict[str, Any]:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs) -> Dict[str, Any]:
+    def pre_process(self, **kwargs):
+        raise NotImplementedError("Subclasses must implement this method")
+
+    @abstractmethod
+    def post_process(self, **kwargs):
         raise NotImplementedError("Subclasses must implement this method")
 
 
@@ -60,7 +64,7 @@ class BaseProcessersManager(ABC):
             try:
                 self._kwargs = self.pre_process_for_starting(**kwargs)
             except EarlyStopProcessException:
-                self._is_running = is_running
+                self._is_running = False
                 return
         else:
             self.pre_process_for_running(**kwargs)

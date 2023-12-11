@@ -20,11 +20,9 @@ class Processer1(BaseProcesser):
 
         st.write("* PROCESSER 1")
         st.write("** START")
-        return kwargs
 
     def post_process(self, **kwargs):
         st.write("** FINISH")
-        return kwargs
 
 
 class Processer2(BaseProcesser):
@@ -36,11 +34,9 @@ class Processer2(BaseProcesser):
     def pre_process(self, **kwargs):
         st.write("* PROCESSER 2")
         st.write("** START")
-        return kwargs
 
     def post_process(self, **kwargs):
         st.write("** FINISH")
-        return kwargs
 
 
 class ProcessersManager(BaseProcessersManager):
