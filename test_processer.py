@@ -4,39 +4,46 @@ from app import BaseProcesser, BaseProcessersManager
 
 
 class Processer1(BaseProcesser):
-    def run(self):
-        for i in range(5):
+    def main_process(self, **kwargs):
+        for i in range(3):
             sleep(1)
             print(i)
+        return kwargs
 
-    def pre_process(self):
+    def pre_process(self, **kwargs):
         print("* PROCESSER 1")
         print("** START")
+        return kwargs
 
-    def post_process(self):
+    def post_process(self, **kwargs):
         print("** FINISH")
+        return kwargs
 
 
 class Processer2(BaseProcesser):
-    def run(self):
-        for i in range(5):
+    def main_process(self, **kwargs):
+        for i in range(3):
             sleep(1)
             print(i)
+        return kwargs
 
-    def pre_process(self):
+    def pre_process(self, **kwargs):
         print("* PROCESSER 2")
         print("** START")
+        return kwargs
 
-    def post_process(self):
+    def post_process(self, **kwargs):
         print("** FINISH")
+        return kwargs
 
 
 class ProcesserList(BaseProcessersManager):
-    def pre_process_for_starting(self):
+    def pre_process_for_starting(self, **kwargs):
         print("---- START ALL ----")
+        return kwargs
 
     def pre_process_for_running(self):
-        print("---- ERROR: ALREADY STARTED ----")
+        print("---- ERROR: RUNNING ----")
 
     def post_process(self):
         print("---- FINISH ALL ----")
