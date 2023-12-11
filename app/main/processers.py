@@ -13,6 +13,7 @@ class Processer1(BaseProcesser):
             print(i)
         kwargs["filepath"] = kwargs["form_schema"].image_filepath
         kwargs["animal_type"] = kwargs["form_schema"].animal_type
+        kwargs["image_discription"] = kwargs["form_schema"].image_discription
         return kwargs
 
     def pre_process(self, **kwargs):
@@ -33,7 +34,7 @@ class Processer2(BaseProcesser):
         for i in range(5):
             sleep(1)
             print(i)
-        kwargs["image"] = cv2.imread(filename=kwargs["filepath"])
+        kwargs["image"] = cv2.imread(filename=kwargs["filepath"], flags=cv2.IMREAD_COLOR)
         return kwargs
 
     def pre_process(self, **kwargs):
@@ -70,7 +71,7 @@ class ProcessersManager(BaseProcessersManager):
         kwargs["message_area"].info("FINISH")
         st.image(
             image=kwargs["image"],
-            caption=kwargs["animal_type"],
+            caption=f"{kwargs['animal_type']}: {kwargs['image_discription']}",
             channels="BGR",
         )
         st.balloons()

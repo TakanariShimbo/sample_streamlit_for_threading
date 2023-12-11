@@ -34,6 +34,11 @@ class MainComponent(BaseComponent):
                 key="AnimalTypeSelectBox",
             )
 
+            inputed_image_discription = st.text_input(
+                label="Image Description", 
+                key="ImageDescriptionTextInput",
+            )
+
             _, left_area, _, center_area, _, right_area, _ = st.columns([1, 3, 1, 3, 1, 3, 1])
             with left_area:
                 is_run_pushed = st.form_submit_button(label="RUN", type="primary", use_container_width=True)
@@ -45,12 +50,12 @@ class MainComponent(BaseComponent):
         if is_run_pushed:
             if not selected_animal_entity:
                 return
-            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity)
+            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity, image_discription=inputed_image_discription)
             ProcessersManagerSState.on_click_run(form_area=form_area, form_schema=form_schema)
         elif is_rerun_pushed:
             if not selected_animal_entity:
                 return
-            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity)
+            form_schema = FormSchema.from_entity(animal_entity=selected_animal_entity, image_discription=inputed_image_discription)
             ProcessersManagerSState.on_click_rerun(form_area=form_area, form_schema=form_schema)
         elif is_reset_pushed:
             ProcessersManagerSState.on_click_reset()
