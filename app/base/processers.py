@@ -7,6 +7,10 @@ class BaseProcesser(Thread, ABC):
     def __init__(self) -> None:
         super().__init__()
 
+    @property
+    def kwargs(self) -> Dict[str, Any]:
+        return self._kwargs
+
     def start_and_wait_to_complete(self, **kwargs) -> None:
         self._kwargs = kwargs
         self._kwargs = self.pre_process(**self._kwargs)
@@ -65,7 +69,7 @@ class BaseProcessersManager(ABC):
         kwargs = self._kwargs
         for processer in self._processers:
             processer.start_and_wait_to_complete(**kwargs)
-            kwargs = processer._kwargs
+            kwargs = processer.kwargs
 
         # run post-process
         self.post_process(**kwargs)
