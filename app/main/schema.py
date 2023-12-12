@@ -13,5 +13,5 @@ class FormSchema(BaseModel):
     @classmethod
     def from_entity(cls, animal_entity: Optional[AnimalEntity], image_discription: str) -> "FormSchema":
         if not animal_entity:
-            raise ValidationError()
+            raise ValidationError("AnimalEntity is None.")
         return cls(animal_type=animal_entity.label_en, image_filepath=animal_entity.filepath, image_discription=image_discription)
