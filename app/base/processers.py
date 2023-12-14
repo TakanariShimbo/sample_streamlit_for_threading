@@ -36,11 +36,11 @@ class BaseProcesser(Thread, ABC):
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process(self, **kwargs):
+    def pre_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs):
+    def post_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
 
@@ -89,9 +89,9 @@ class BaseProcessersManager(ABC):
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def pre_process_for_running(self, **kwargs):
+    def pre_process_for_running(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def post_process(self, **kwargs):
+    def post_process(self, **kwargs) -> None:
         raise NotImplementedError("Subclasses must implement this method")
