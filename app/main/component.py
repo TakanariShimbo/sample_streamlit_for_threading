@@ -2,7 +2,6 @@ from textwrap import dedent
 
 import streamlit as st
 
-from .schema import FormSchema
 from .s_states import ProcessersManagerSState
 from .. import BaseComponent
 from model import AnimalTable
